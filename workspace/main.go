@@ -3,15 +3,11 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"net/url"
 	"strconv"
 	"workspace/internal"
 )
 
 func main() {
-
-	fmt.Print()
-	internal.MyFunc()
 
 	http.HandleFunc("/calculate", func(w http.ResponseWriter, r *http.Request) {
 		internal.EnableCors(w)
@@ -25,11 +21,10 @@ func main() {
 
 			fmt.Println(res)
 			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(strconv.Itoa(res)))
+			w.Write([]byte(strconv.FormatFloat(res, 'f', 2, 64)))
 			return
 		}
 	})
-	url.Parse("")
 	fmt.Println("Listening on port 8080")
 	http.ListenAndServe(":8080", nil)
 
