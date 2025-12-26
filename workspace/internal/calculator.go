@@ -3,7 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -83,8 +82,4 @@ func calc(sn1, sn2, op string) (float64, error) {
 	default:
 		return 0, nil
 	}
-}
-
-func MyFunc() {
-	fmt.Println("test")
 }
