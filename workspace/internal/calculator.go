@@ -21,27 +21,30 @@ func EnableCors(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 }
 
-func ReturnResponse(r *http.Request) (int, error) {
+func ReturnResponse(r *http.Request) (float64, error) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
 	var data map[string]string
 	if err := json.Unmarshal(body, &data); err != nil {
-		return 0, err
+		return 0.0, err
 	}
 	result, err := parseOperation(data["foo"])
 	if err != nil {
-		return 0, err
+		return 0.0, err
 	}
 	return result, nil
 
 }
-func parseOperation(operation string) (int, error) {
+func parseOperation(operation string) (float64, error) {
 	num1, num2 := "", ""
 	op := ""
 	for _, k := range operation {
 		if _, prs := operators[string(k)]; prs {
+			if op != "" {
+				return 0, errors.New("multiple operators found")
+			}
 			op = string(k)
 		} else if op == "" {
 			num1 += string(k)
@@ -51,16 +54,16 @@ func parseOperation(operation string) (int, error) {
 	}
 	return calc(num1, num2, op)
 }
-func calc(sn1, sn2, op string) (int, error) {
+func calc(sn1, sn2, op string) (float64, error) {
 	if sn1 == "" || sn2 == "" || op == "" {
 		err := errors.New("missing 1 number/operator")
 		return 0, err
 	}
-	n1, err := strconv.Atoi(sn1)
+	n1, err := strconv.ParseFloat(sn1, 32)
 	if err != nil {
 		return 0, err
 	}
-	n2, err := strconv.Atoi(sn2)
+	n2, err := strconv.ParseFloat(sn2, 32)
 	if err != nil {
 		return 0, err
 	}
