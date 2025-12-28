@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"workspace/internal"
+
+	"github.com/Dem4h/Go-Calculator-API/internal"
 )
 
 func main() {
