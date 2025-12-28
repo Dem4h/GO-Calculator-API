@@ -15,15 +15,17 @@ func main() {
 		if r.Method == "OPTIONS" {
 			return
 		}
-		res, err := internal.ReturnResponse(r)
-		if err != nil {
-			fmt.Println("Error:", err)
-		} else {
+		if r.Method == "PUT" {
+			res, err := internal.ReturnResponse(r)
+			if err != nil {
+				fmt.Println("Error:", err)
+			} else {
 
-			fmt.Println(res)
-			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(strconv.FormatFloat(res, 'f', 2, 64)))
-			return
+				fmt.Println(res)
+				w.Header().Set("Content-Type", "application/json")
+				w.Write([]byte(strconv.FormatFloat(res, 'f', 2, 64)))
+				return
+			}
 		}
 	})
 	fmt.Println("Listening on port 8080")
